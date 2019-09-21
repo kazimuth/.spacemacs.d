@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Julia code block (org mode)
+# key: julia-src
+# --
+#+BEGIN_SRC julia :session jl :async yes
+#+END_SRC

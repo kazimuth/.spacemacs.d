@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: org-header
+# key: oh
+# --
+
+#+TITLE: $0
+#+AUTHOR: James Gilles
+#+EMAIL: jhgilles@mit.edu
+#+DATE: September 17 2019
+#+OPTIONS: tex:t latex:t
+#+STARTUP: latexpreview

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: mathtt
+# key: mt
+# --
+
+\mathtt{$0}

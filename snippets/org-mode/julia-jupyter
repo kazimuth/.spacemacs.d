@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: Julia jupyter block
+# key: ;j
+# --
+#+BEGIN_SRC jupyter-julia :session jl :async yes
+$0
+#+END_SRC
