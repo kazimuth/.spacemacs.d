@@ -51,9 +51,7 @@ values."
      markdown
      (org :variables org-projectile-file "todo.org")
      bibtex
-     ; note: this is the emacs package "anaconda" which has nothing to do
-     ; with `conda`...
-     (python :variables python-backend 'anaconda)
+     (python :variables python-backend 'lsp)
      julia
      haskell
      (shell :variables
@@ -418,6 +416,10 @@ you should place your code here."
   (require 'lsp-sourcekit)
   (setq spacemacs-jump-handlers-swift-mode '())
   (add-hook 'swift-mode-hook (lambda () (lsp)))
+  (setq lsp-ui-flycheck-live-reporting nil)
+
+  ;; pyls settings
+  (setq flycheck-idle-change-delay 5.0)
 
   ;; org mode + jupyter integration
   (setq inferior-julia-program-name "/usr/bin/julia")
@@ -504,6 +506,8 @@ you should place your code here."
                (newargs (append (list file-or-data type data-p) newprops)))
           (apply oldfun newargs)))))
   (advice-add 'create-image :around #'create-image-2x)
+  (defun risky-local-variable-p (sym &optional _ignored)
+    nil)
 
   ;(defun create-image-2x-org-override (oldfun file-or-data &optional type data-p &rest props)
   ;  (if (and (plist-member props :width) (= 2 (length props)))
