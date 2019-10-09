@@ -491,10 +491,39 @@ you should place your code here."
 
   (setq debug-on-error t)
 
-  ;; scale most images by 2
+  ; https://www.gnu.org/software/emacs/manual/html_node/elisp/Symbol-Components.html
+  ; https://www.gnu.org/software/emacs/manual/html_node/elisp/Function-Cells.html
+
+  (defun get-string-from-file (filePath)
+    "Return filePath's file content."
+    (with-temp-buffer
+      (insert-file-contents filePath)
+      (buffer-string)))
+
+  (defun copy-orig-function (symbol)
+    (let ((symbol-orig (intern (format "%s-orig" (symbol-name symbol)))))
+      (progn
+        (if (not (fboundp symbol-orig))
+            (fset symbol-orig (symbol-function symbol)))
+        )))
+
+  (copy-orig-function 'create-image)
+
+  (if (not (file-exists-p "/tmp/emacs-upscaled"))
+      (make-directory "/tmp/emacs-upscaled"))
+
+  ;;; scale most images by 2
   (defun create-image-2x (oldfun file-or-data &optional type data-p &rest props)
-    (message "%s" (stringp file-or-data))
     (progn
+      (if (and (boundp 'file-or-data) file-or-data (stringp file-or-data) (string-suffix-p ".svg" file-or-data))
+          (let*
+              ((shortname (f-base file-or-data))
+               (target (format "/tmp/emacs-upscaled/%s.svg" shortname)))
+            (if (not (file-exists-p target))
+                (call-process (expand-file-name "~/.spacemacs.d/double_svg.py") nil nil 't file-or-data target)
+              )
+            (setq file-or-data target))
+        )
       (let ((original (apply oldfun (append (list file-or-data type data-p) props))))
         (if (memq type '(xpm xbm pbm imagemagick)) ;not sure about xbm,pbm,imagemagick
             original
@@ -509,23 +538,11 @@ you should place your code here."
                                         ;(newargs (append (list file-or-data 'imagemagick data-p) newprops)))
                  (newargs (append (list file-or-data type data-p) newprops)))
             (apply oldfun newargs))))))
+  (fset 'create-image (symbol-function 'create-image-orig))
   (advice-add 'create-image :around #'create-image-2x)
+
   (defun risky-local-variable-p (sym &optional _ignored)
     nil)
-
-  ;(defun create-image-2x-org-override (oldfun file-or-data &optional type data-p &rest props)
-  ;  (if (and (plist-member props :width) (= 2 (length props)))
-  ;      (setq props (plist-put props :width 300px)))
-  ;      (let ((original (apply oldfun (append (list file-or-data type data-p) props))))
-  ;        (if (not (string= type "xpm"))
-  ;        ;(setf (image-property original :scale) 4)
-  ;        original))
-  ;       ; (progn
-  ;       ;       (progn
-  ;       ;           (message "%s" (list file-or-data type data-p props))
-  ;       ;           (message "%s" original)))
-  ;       ;   original))))
-  ;
 
   ;; pretty config: use fira code
   (global-pretty-mode t)
