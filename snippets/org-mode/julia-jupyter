@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: Julia jupyter block
 # key: ;j
+# expand-env: ((yas-indent-line 'fixed))
 # --
 #+BEGIN_SRC jupyter-julia :session jl :async yes
 $0

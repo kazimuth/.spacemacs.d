@@ -3,6 +3,6 @@
 # key: ;p
 # --
 
-#+BEGIN_SRC jupyter-python :session jl :async yes
+#+BEGIN_SRC jupyter-python :session py :async yes
 $0
 #+END_SRC

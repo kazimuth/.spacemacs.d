@@ -4,8 +4,8 @@
 # --
 
 #+TITLE: $0
-#+AUTHOR: James Gilles
+#+AUTHOR: james gilles
 #+EMAIL: jhgilles@mit.edu
-#+DATE: September 17 2019
+#+DATE: `(downcase (format-time-string "%d %B %Y"))`
 #+OPTIONS: tex:t latex:t
 #+STARTUP: latexpreview

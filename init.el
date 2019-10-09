@@ -489,22 +489,26 @@ you should place your code here."
   ;; proof-general / company-mode
   (spacemacs/set-leader-keys-for-major-mode 'coq-mode "M-." 'company-coq-proof-goto-point)
 
+  (setq debug-on-error t)
+
   ;; scale most images by 2
   (defun create-image-2x (oldfun file-or-data &optional type data-p &rest props)
-    (let ((original (apply oldfun (append (list file-or-data type data-p) props))))
-      (if (memq type '(xpm xbm pbm imagemagick)) ;not sure about xbm,pbm,imagemagick
-          original
-        (let* ((width-height (image-size original t))
-               (width (car width-height))
-               (height (cdr width-height))
-               (width-2x (* 2 width))
-               (height-2x (* 2 height))
-               (newprops (plist-put props :format type))
-               (newprops (plist-put newprops :width width-2x))
-               (newprops (plist-put newprops :height height-2x))
-               ;(newargs (append (list file-or-data 'imagemagick data-p) newprops)))
-               (newargs (append (list file-or-data type data-p) newprops)))
-          (apply oldfun newargs)))))
+    (message "%s" (stringp file-or-data))
+    (progn
+      (let ((original (apply oldfun (append (list file-or-data type data-p) props))))
+        (if (memq type '(xpm xbm pbm imagemagick)) ;not sure about xbm,pbm,imagemagick
+            original
+          (let* ((width-height (image-size original t))
+                 (width (car width-height))
+                 (height (cdr width-height))
+                 (width-2x (* 2 width))
+                 (height-2x (* 2 height))
+                 (newprops (plist-put props :format type))
+                 (newprops (plist-put newprops :width width-2x))
+                 (newprops (plist-put newprops :height height-2x))
+                                        ;(newargs (append (list file-or-data 'imagemagick data-p) newprops)))
+                 (newargs (append (list file-or-data type data-p) newprops)))
+            (apply oldfun newargs))))))
   (advice-add 'create-image :around #'create-image-2x)
   (defun risky-local-variable-p (sym &optional _ignored)
     nil)
@@ -602,7 +606,112 @@ This function is called at the very end of Spacemacs initialization."
     (insert-shebang helm-gtags ggtags flycheck-bashate fish-mode counsel-gtags counsel swiper company-shell pretty-mode company-coq company-math math-symbol-lists proof-general xterm-color unfill smeargle shell-pop orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download mwim multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link gh-md fuzzy flyspell-correct-helm flyspell-correct flycheck-pos-tip pos-tip flycheck evil-magit magit transient git-commit with-editor eshell-z eshell-prompt-extras esh-help company-statistics company auto-yasnippet yasnippet auto-dictionary ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu elisp-slime-nav dumb-jump diminish define-word column-enforce-mode clean-aindent-mode auto-highlight-symbol auto-compile aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line)))
  '(safe-local-variable-values
    (quote
-    ((python-backend . lsp)
+    ((eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (setq exec-path
+                 (append
+                  (quote
+                   ("/home/radical/dev/adv_lth/miniconda/bin"))
+                  exec-path))
+           (setenv "PYTHONPATH"
+                   (concat "/home/radical/dev/adv_lth" ":"
+                           (getenv "PYTHONPATH"))))
+     (eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (setq exec-path
+                 (append
+                  (quote
+                   ("/home/radical/dev/adv_lth/miniconda/bin"))
+                  exec-path))
+           (setenv "PYTHONPATH"
+                   (concat "/home/radical/dev/adv_lth" ";"
+                           (getenv "PYTHONPATH"))))
+     (eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (setq exec-path
+                 (append
+                  (quote
+                   ("/home/radical/dev/adv_lth/miniconda/bin"))
+                  exec-path))
+           (setenv "PYTHONPATH"
+                   (concat "/home/radical/dev" ";"
+                           (getenv "PYTHONPATH"))))
+     (eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (setq exec-path
+                 (append
+                  (quote
+                   ("/home/radical/dev/adv_lth/miniconda/bin"))
+                  exec-path))
+           (setenv "PYTHONPATH"
+                   (append
+                    (quote
+                     ("/home/radical/dev"))
+                    (getenv "PYTHONPATH"))))
+     (eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (setq exec-path
+                 (append
+                  (quote
+                   ("/home/radical/dev/adv_lth/miniconda/bin"))
+                  exec-path)))
+     (eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (setq exec-path
+                 (append exec-path
+                         (quote
+                          ("/home/radical/dev/adv_lth/miniconda/bin")))))
+     (eval progn
+           (message "running in adv-lth")
+           (defun jupyter-command
+               (&rest args)
+             (with-temp-buffer
+               (when
+                   (zerop
+                    (apply
+                     (function process-file)
+                     "/home/radical/dev/adv_lth/miniconda/bin/jupyter" nil t nil args))
+                 (string-trim-right
+                  (buffer-string)))))
+           (jupyter-available-kernelspecs
+            (quote t)))
+     (eval progn
+           (message "running in adv-lth")
+           (defun jupyter-command
+               (&rest args)
+             (with-temp-buffer
+               (when
+                   (zerop
+                    (apply
+                     (function process-file)
+                     "/home/radical/dev/adv_lth/miniconda/bin/jupyter" nil t nil args))
+                 (string-trim-right
+                  (buffer-string))))))
+     (lsp-pyls-server-command . "/home/radical/dev/adv_lth/miniconda/bin/pyls")
+     (lsp-pyls-server-command . "/home/radical/dev/adv_lth/scripts/pyls")
+     (lsp-pyls-server-command . "env PYTHONPATH=$PYTHONPATH;miniconda/lib/python3.7/site-packages/ /home/radical/dev/adv_lth/scripts/pyls")
+     (lsp-pyls-server-command . "env PYTHONPATH=$PYTHONPATH;miniconda/lib/python3.7/site-packages/ /home/radical/dev/pyls-pypy/venv/bin/pyls")
+     (eval progn
+           (message "running in adv-lth python")
+           (pyvenv-activate
+            (expand-file-name "/miniconda"))
+           (lsp))
+     (lsp-pyls-server-command . "/home/radical/dev/pyls-pypy/venv/bin/pyls")
+     (eval progn
+           (message "running in adv-lth"))
+     (python-backend . lsp)
      (eval require
            (quote ox-gfm))
      (org-inline-image-overlays)
